@@ -1,0 +1,10 @@
+WARNING Wed Aug 26 17:01:12 2026: Attach conflict when attaching 'piper_model' to 'piper_dual_scene', policy is 'warning'
+impratio: parent has 1 (default), child has 10, keeping parent value
+integrator: parent has 0 (default), child has 3, keeping parent value
+cone: parent has 0 (default), child has 1, keeping parent value
+
+WARNING Wed Aug 26 17:01:12 2026: Attach conflict when attaching 'piper_model' to 'piper_dual_scene', policy is 'warning'
+impratio: parent has 1 (default), child has 10, keeping parent value
+integrator: parent has 0 (default), child has 3, keeping parent value
+cone: parent has 0 (default), child has 1, keeping parent value
+
