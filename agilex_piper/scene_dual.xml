@@ -4,7 +4,7 @@
   <visual>
     <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
     <rgba haze="0.15 0.25 0.35 1"/>
-    <global azimuth="120" elevation="-20"/>
+    <global azimuth="120" elevation="-20" offwidth="1280" offheight="720"/>
   </visual>
 
   <asset>
@@ -12,17 +12,93 @@
     <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
       markrgb="0.8 0.8 0.8" width="300" height="300"/>
     <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+    <material name="desk_mat" rgba="0.82 0.78 0.72 1"/>
+    <material name="desk_top_mat" rgba="0.28 0.30 0.34 1"/>
+    <material name="mount_mat" rgba="0.25 0.25 0.28 1"/>
+    <material name="holder_mat" rgba="0.45 0.30 0.18 1"/>
+    <material name="card_mat" rgba="0.96 0.96 0.98 1"/>
+    <material name="face_mat" rgba="0.86 0.66 0.52 1"/>
+    <material name="shirt_mat" rgba="0.30 0.42 0.58 1"/>
+    <texture name="tcs_logo" type="2d" file="assets/tcs_logo.png"/>
+    <material name="tcs_logo_mat" texture="tcs_logo" emission="0.45" specular="0.1" shininess="0.1"/>
     <model name="piper_model" file="piper.xml"/>
   </asset>
 
   <worldbody>
     <light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
     <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>
-    <body name="left_origin" pos="0 0.3 0">
+    <!-- Two Piper arms bolted to the reception counter, facing the guest (+x) -->
+    <body name="left_origin" pos="0.10 0.28 0.762">
+      <geom name="left_mount" type="cylinder" size="0.05 0.006" pos="0 0 -0.006" material="mount_mat"/>
       <attach model="piper_model" body="base_link" prefix="left_"/>
     </body>
-    <body name="right_origin" pos="0 -0.3 0">
+    <body name="right_origin" pos="0.10 -0.28 0.762">
+      <geom name="right_mount" type="cylinder" size="0.05 0.006" pos="0 0 -0.006" material="mount_mat"/>
       <attach model="piper_model" body="base_link" prefix="right_"/>
+    </body>
+
+    <!-- Reception / front desk. Staff-side worktop surface at z = 0.75 -->
+    <body name="desk" pos="0.135 0 0">
+      <geom name="desk_pedestal" type="box" size="0.37 0.83 0.364" pos="0 0 0.364" material="desk_mat"/>
+      <geom name="desk_worktop" type="box" size="0.385 0.85 0.011" pos="0 0 0.739" material="desk_top_mat"/>
+      <geom name="desk_ledge" type="box" size="0.03 0.85 0.065" pos="0.35 0 0.815" material="desk_mat"/>
+    </body>
+
+    <!-- Angled card holder: a fanned rack facing the arms (-x). Card faces angle up toward the
+         wrist cameras; each stepped top edge is clear for the gripper to pick straight out. -->
+    <body name="card_holder" pos="0.33 0 0">
+      <geom name="holder_base" type="box" size="0.05 0.035 0.008" pos="-0.03 0 0.759" material="holder_mat"/>
+      <geom name="holder_lip" type="box" size="0.005 0.035 0.014" pos="-0.072 0 0.777" material="holder_mat"/>
+      <geom name="holder_backplate" type="box" size="0.008 0.033 0.09" pos="0.05 0 0.87"
+        quat="0.9763 0 0.2164 0" material="holder_mat"/>
+      <geom name="holder_side_l" type="box" size="0.06 0.002 0.06" pos="0.0 0.031 0.84" material="holder_mat"/>
+      <geom name="holder_side_r" type="box" size="0.06 0.002 0.06" pos="0.0 -0.031 0.84" material="holder_mat"/>
+    </body>
+
+    <!-- Staff ID cards (54 x 86 mm portrait) fanned in the rack, leaning ~25 deg, faces toward the arms.
+         Each is stepped up the rack so its top edge is exposed for a straight pull-out grasp. -->
+    <body name="staff_card_1" pos="0.315 0 0.806" quat="0.9763 0 0.2164 0">
+      <freejoint/>
+      <geom name="card_1" type="box" size="0.001 0.027 0.043" mass="0.006" material="card_mat" friction="0.9 0.02 0.001"/>
+      <geom name="card_1_photo" type="box" size="0.0005 0.014 0.017" pos="-0.0016 0 0.012" rgba="0.86 0.62 0.48 1"/>
+      <geom name="card_1_band" type="box" size="0.0005 0.023 0.006" pos="-0.0016 0 0.033" rgba="0.75 0.20 0.18 1"/>
+    </body>
+    <body name="staff_card_2" pos="0.325 0 0.828" quat="0.9763 0 0.2164 0">
+      <freejoint/>
+      <geom name="card_2" type="box" size="0.001 0.027 0.043" mass="0.006" material="card_mat" friction="0.9 0.02 0.001"/>
+      <geom name="card_2_photo" type="box" size="0.0005 0.014 0.017" pos="-0.0016 0 0.012" rgba="0.70 0.50 0.38 1"/>
+      <geom name="card_2_band" type="box" size="0.0005 0.023 0.006" pos="-0.0016 0 0.033" rgba="0.20 0.45 0.75 1"/>
+    </body>
+    <body name="staff_card_3" pos="0.335 0 0.850" quat="0.9763 0 0.2164 0">
+      <freejoint/>
+      <geom name="card_3" type="box" size="0.001 0.027 0.043" mass="0.006" material="card_mat" friction="0.9 0.02 0.001"/>
+      <geom name="card_3_photo" type="box" size="0.0005 0.014 0.017" pos="-0.0016 0 0.012" rgba="0.94 0.80 0.66 1"/>
+      <geom name="card_3_band" type="box" size="0.0005 0.023 0.006" pos="-0.0016 0 0.033" rgba="0.15 0.55 0.55 1"/>
+    </body>
+    <body name="staff_card_4" pos="0.345 0 0.871" quat="0.9763 0 0.2164 0">
+      <freejoint/>
+      <geom name="card_4" type="box" size="0.001 0.027 0.043" mass="0.006" material="card_mat" friction="0.9 0.02 0.001"/>
+      <geom name="card_4_photo" type="box" size="0.0005 0.014 0.017" pos="-0.0016 0 0.012" rgba="0.80 0.60 0.55 1"/>
+      <geom name="card_4_band" type="box" size="0.0005 0.023 0.006" pos="-0.0016 0 0.033" rgba="0.20 0.55 0.35 1"/>
+    </body>
+    <body name="staff_card_5" pos="0.355 0 0.893" quat="0.9763 0 0.2164 0">
+      <freejoint/>
+      <geom name="card_5" type="box" size="0.001 0.027 0.043" mass="0.006" material="card_mat" friction="0.9 0.02 0.001"/>
+      <geom name="card_5_photo" type="box" size="0.0005 0.014 0.017" pos="-0.0016 0 0.012" rgba="0.78 0.55 0.50 1"/>
+      <geom name="card_5_band" type="box" size="0.0005 0.023 0.006" pos="-0.0016 0 0.033" rgba="0.18 0.22 0.45 1"/>
+    </body>
+
+    <!-- Floating TCS logo sign behind the reception desk -->
+    <body name="tcs_logo" pos="-0.65 0 1.6">
+      <geom name="tcs_logo_panel" type="box" size="0.015 0.84 0.25" material="tcs_logo_mat"/>
+    </body>
+
+    <!-- Guest standing at the counter: face-recognition target for the wrist cameras -->
+    <body name="guest" pos="0.80 0 0">
+      <geom name="guest_torso" type="box" size="0.11 0.18 0.26" pos="0 0 1.02" material="shirt_mat"/>
+      <geom name="guest_neck" type="capsule" fromto="0 0 1.28 0 0 1.40" size="0.03" material="face_mat"/>
+      <geom name="guest_head" type="sphere" size="0.092" pos="0 0 1.49" material="face_mat"/>
+      <geom name="guest_nose" type="sphere" size="0.02" pos="-0.088 0 1.47" material="face_mat"/>
     </body>
   </worldbody>
 </mujoco>

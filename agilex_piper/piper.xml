@@ -30,6 +30,10 @@
     <material name="red_mat" rgba="0.82 0.15 0.15 1"/>
     <material name="black_mat" rgba="0 0 0 1"/>
     <material name="light_blue" rgba="0.79 0.82 0.93 1"/>
+    <material name="realsense_mat" rgba="0.16 0.20 0.28 1" reflectance="0.3"/>
+    <material name="realsense_glass_mat" rgba="0.03 0.04 0.06 1" reflectance="0.4"/>
+    <material name="realsense_accent_mat" rgba="0.10 0.60 0.95 1" emission="0.35"/>
+    <material name="lens_mat" rgba="0.12 0.14 0.20 1" reflectance="0.6"/>
 
     <mesh file="link2_0.obj"/>
     <mesh file="link2_1.obj"/>
@@ -226,6 +230,24 @@
                   <joint name="joint6" axis="0 0 1" range="-3.14 3.14"/>
                   <geom quat="0.707105 0 0 0.707108" mesh="link6" material="gray_mat" class="visual"/>
                   <geom quat="0.707105 0 0 0.707108" mesh="link6" class="collision"/>
+                  <!-- Intel RealSense D435 wrist camera, mounted on top of the gripper (visual only) -->
+                  <geom name="realsense_bracket" type="box" size="0.008 0.012 0.018" pos="0 -0.028 0.03"
+                    material="realsense_mat" class="visual"/>
+                  <geom name="realsense_housing" type="box" size="0.055 0.016 0.016" pos="0 -0.045 0.048"
+                    material="realsense_mat" class="visual"/>
+                  <geom name="realsense_bezel" type="box" size="0.052 0.014 0.004" pos="0 -0.045 0.066"
+                    material="realsense_glass_mat" class="visual"/>
+                  <geom name="realsense_accent" type="box" size="0.055 0.002 0.005" pos="0 -0.061 0.048"
+                    material="realsense_accent_mat" class="visual"/>
+                  <geom name="realsense_lens_irL" type="cylinder" size="0.006 0.002" pos="-0.036 -0.045 0.069"
+                    material="lens_mat" class="visual"/>
+                  <geom name="realsense_lens_rgb" type="cylinder" size="0.007 0.002" pos="-0.010 -0.045 0.069"
+                    material="lens_mat" class="visual"/>
+                  <geom name="realsense_lens_irR" type="cylinder" size="0.006 0.002" pos="0.022 -0.045 0.069"
+                    material="lens_mat" class="visual"/>
+                  <geom name="realsense_projector" type="cylinder" size="0.004 0.002" pos="0.040 -0.045 0.069"
+                    material="realsense_accent_mat" class="visual"/>
+                  <camera name="wrist_cam" pos="0 -0.045 0.07" xyaxes="1 0 0  0 -0.966 0.259" fovy="42"/>
                   <body name="link7" pos="0 0 0.13503" quat="1.89468e-08 1.89469e-08 0.707108 0.707105" gravcomp="1">
                     <inertial pos="-0.000277778 -0.0467673 -0.00921029" quat="0.46134 0.536174 -0.553273 0.439968"
                       mass="0.0264823" diaginertia="0.001 0.001 0.001"/>
