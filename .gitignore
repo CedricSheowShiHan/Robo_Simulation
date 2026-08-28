@@ -1,3 +1,13 @@
 .DS_Store
 uv.lock
 gallery.md
+
+# Python
+__pycache__/
+*.pyc
+
+# issue_card_demo.py render output
+agilex_piper/out/
+
+# MuJoCo runtime log
+MUJOCO_LOG.TXT
